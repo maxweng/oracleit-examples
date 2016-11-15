@@ -1,6 +1,7 @@
 contract OracleItI {
     address public callbackAddress;
     uint public defaultGasLimit;
+    uint public defaultGasPrice;
     function query(uint timestamp, bytes32 dataSource, string arg1, string arg2, uint gasLimit, uint gasPrice) returns(uint id);
     function getPrice(bytes32 dataSource) returns(uint price);
 }
@@ -22,8 +23,8 @@ contract usingOracleIt {
     }
 
     function oracleItSetNetwork() internal returns(bool){
-        if (getCodeSize(0x647d90242b287fdbd80558b3d972b25dbb59a081)>0){
-            OIAR = OracleItAddrResolverI(0x647d90242b287fdbd80558b3d972b25dbb59a081);
+        if (getCodeSize(0xcbe4a5a11aa010adbcccad468751f158690ae322)>0){
+            OIAR = OracleItAddrResolverI(0xcbe4a5a11aa010adbcccad468751f158690ae322);
             return true;
         }
         return false;
@@ -59,7 +60,7 @@ contract usingOracleIt {
 
     function oracleItQuery(uint timestamp, string _dataSource, string arg1, string arg2, uint gasLimit, uint gasPrice) oracleItAPI internal returns (uint id){
         if(gasLimit == 0) gasLimit = oracleIt.defaultGasLimit();
-        if(gasPrice == 0) gasPrice = tx.gasprice;
+        if(gasPrice == 0) gasPrice = oracleIt.defaultGasPrice();
         uint price = oracleIt.getPrice(stringToBytes32(_dataSource));
         if (price > 1 ether) return 0; // unexpectedly high price
         price += gasLimit * gasPrice;

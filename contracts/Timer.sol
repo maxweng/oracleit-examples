@@ -21,7 +21,7 @@ contract Timer is usingOracleIt {
         }
     }
 
-    function __callback(bytes32 id, string result) {
+    function __callback(uint id, string result) {
         if (msg.sender != oracleItCallbackAddress()) throw;
         time = now;
         times += 1;
