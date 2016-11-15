@@ -23,8 +23,8 @@ contract usingOracleIt {
     }
 
     function oracleItSetNetwork() internal returns(bool){
-        if (getCodeSize(0xcbe4a5a11aa010adbcccad468751f158690ae322)>0){
-            OIAR = OracleItAddrResolverI(0xcbe4a5a11aa010adbcccad468751f158690ae322);
+        if (getCodeSize(0xaeab195e94cee3ffc5f015984994f53adae41f86)>0){
+            OIAR = OracleItAddrResolverI(0xaeab195e94cee3ffc5f015984994f53adae41f86);
             return true;
         }
         return false;
@@ -61,10 +61,11 @@ contract usingOracleIt {
     function oracleItQuery(uint timestamp, string _dataSource, string arg1, string arg2, uint gasLimit, uint gasPrice) oracleItAPI internal returns (uint id){
         if(gasLimit == 0) gasLimit = oracleIt.defaultGasLimit();
         if(gasPrice == 0) gasPrice = oracleIt.defaultGasPrice();
-        uint price = oracleIt.getPrice(stringToBytes32(_dataSource));
+        bytes32 dataSource = stringToBytes32(_dataSource);
+        uint price = oracleIt.getPrice(dataSource);
         if (price > 1 ether) return 0; // unexpectedly high price
         price += gasLimit * gasPrice;
-        return oracleIt.query.value(price)(timestamp, stringToBytes32(_dataSource), arg1, arg2, gasLimit, gasPrice);
+        return oracleIt.query.value(price)(timestamp, dataSource, arg1, arg2, gasLimit, gasPrice);
     }
 
     function oracleItCallbackAddress() oracleItAPI internal returns (address){
