@@ -54,7 +54,7 @@ module.exports = function (callback) {
     showBalances();
 
     function testQueryPrice(cb) {
-        ethCnyPrice.queryPrice({ from: accounts[0], value: web3.toWei(0.1, "ether") }).then(function (transactionId) {
+        ethCnyPrice.queryPrice({ from: accounts[0], value: web3.toWei(0.1, "ether"), gas: 1000000, gasPrice: 20000000000 }).then(function (transactionId) {
             console.log("Transaction ID: ", "" + transactionId);
             cb();
         }).catch(function(err){
